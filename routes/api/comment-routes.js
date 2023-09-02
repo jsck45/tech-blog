@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Comment } = require('../../models/Comment'); 
+const withAuth = require('../../middleware/withAuth');
 
 router.get('/', async (req, res) => {
   try {
