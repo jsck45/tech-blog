@@ -4,14 +4,17 @@ const session = require('express-session');
 const path = require('path');
 const sequelize = require('./config/config');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const { apiRouter, htmlRouter } = require('./routes/index');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.set('views', path.join(__dirname, 'views'));
 
 // Set up Handlebars as the template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -36,8 +39,8 @@ app.use(
 );
 
 // Routes
-app.use(require('./routes/html-routes'));
-app.use('/api', require('./routes/api-routes'));
+app.use('/api', apiRouter);
+app.use('/', htmlRouter);
 
 // Start the server
 sequelize.sync({ force: false }).then(() => {
