@@ -12,7 +12,7 @@ const commentData = [
     comment: 'This is great!',
   },
   {
-    userId: 3,
+    userId: 1,
     postId: 2,
     comment: 'Amazing work!',
   },
