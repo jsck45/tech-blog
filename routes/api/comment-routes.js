@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const withAuth = require('../../middleware/withAuth');
 const {
   getAllComments,
   getCommentById,
@@ -7,7 +8,6 @@ const {
   updateComment,
   deleteComment,
 } = require('../../controllers/CommentController');
-const withAuth = require('../../middleware/withAuth');
 
 router.get('/', getAllComments);
 router.get('/:id', getCommentById);

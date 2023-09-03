@@ -1,4 +1,13 @@
 .content {
-    min-height: 100vh;
+    min-height: 60vh;
     background-color: grey;
+}
+.card {
+    border: solid 1px;
+}
+.centered-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Make the form take the full viewport height */
 }

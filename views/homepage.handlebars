@@ -1,0 +1,10 @@
+<div class="card-deck mt-4">
+            {{#each posts}}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <p class="card-text">{{this.content}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
