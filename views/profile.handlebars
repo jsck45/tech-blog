@@ -1,0 +1,11 @@
+<div class="container">
+        <h1>Welcome, {{ user.username }}!</h1>
+        <h2>Your Posts:</h2>
+        <ul>
+            {{#each user.posts}}
+                <li>{{ this.title }} - {{ this.createdAt }}</li>
+                <p>{{ this.content }}</p>
+            {{/each}}
+        </ul>
+        <p><a href="/">Back to Home</a></p>
+    </div>

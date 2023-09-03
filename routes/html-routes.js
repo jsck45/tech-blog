@@ -19,8 +19,14 @@ router.get('/profile', async (req, res) => {
   if (isAuthenticated) {
     try {
       const userId = req.session.user.id;
-      const user = await User.findByPk(userId);
-
+      const user = await User.findByPk(userId, {
+        include: [
+          {
+            model: Post,
+            order: [['createdAt', 'DESC']], // Order posts by creation date (latest first)
+          },
+        ],
+      });
       if (user) {
         res.render('profile', { user });
       } else {
