@@ -23,30 +23,25 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 // Set up the session middleware to use the SequelizeStore.
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    cookie: {
-      maxAge: 300000,
-      httpOnly: true,
-      secure: false, // Change to true for production with HTTPS
-      sameSite: 'strict',
-    },
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({
-      db: sequelize,
-    }),
-  })
-);
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET,
+  cookie: {
+    maxAge: 300000,
+    httpOnly: true,
+    secure: false, // Change to true for production with HTTPS
+    sameSite: 'strict',
+  },
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize,
+  }),
+});
 
-// Use the router object
-console.log('Defining routes...');
 
+
+app.use(sessionMiddleware); // Use the session middleware here
 app.use('/', router);
-
-console.log('Routes defined.');
-
 
 // Add this line to log incoming requests
 app.use((req, res, next) => {
@@ -55,6 +50,10 @@ app.use((req, res, next) => {
 });
 
 // Start the server
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log('Now listening'));
-});
+sequelize.sync({ force: false })
+  .then(() => {
+    app.listen(PORT, () => console.log('Now listening'));
+  })
+  .catch((error) => {
+    console.error('Database synchronization error:', error);
+  });

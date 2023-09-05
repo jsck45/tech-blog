@@ -3,8 +3,11 @@ const bcrypt = require('bcrypt');
 // Compare user-entered password with stored hashed password
 const comparePasswords = async (enteredPassword, hashedPassword) => {
   try {
-    return await bcrypt.compare(enteredPassword, hashedPassword);
+    const isMatch = await bcrypt.compare(enteredPassword, hashedPassword);
+    console.log('Password comparison result:', isMatch);
+    return isMatch;
   } catch (error) {
+    console.error('Error comparing passwords:', error);
     throw error;
   }
 };

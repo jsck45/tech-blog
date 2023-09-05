@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { User } = require('../../models');
+const bcrypt = require('bcrypt');
 const { withAuth, comparePasswords } = require('../../middleware/authMiddleware');
 
 // Get all users
@@ -31,7 +32,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new user
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     console.log('Received signup request:', req.body);
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -80,6 +81,7 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Failed to log in' });
   }
 });
+
 
 // Update a user
 router.put('/:id', withAuth, async (req, res) => {
