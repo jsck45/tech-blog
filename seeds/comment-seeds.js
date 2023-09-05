@@ -11,11 +11,11 @@ const commentData = [
     postId: 1,
     comment: 'This is great!',
   },
-  {
-    userId: 1,
-    postId: 2,
-    comment: 'Amazing work!',
-  },
+  // {
+  //   userId: 1,
+  //   postId: 2,
+  //   comment: 'Amazing work!',
+  // },
 ];
 
 const seedComments = () => Comment.bulkCreate(commentData);

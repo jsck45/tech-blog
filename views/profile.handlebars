@@ -2,10 +2,15 @@
         <h1>Welcome, {{ user.username }}!</h1>
         <h2>Your Posts:</h2>
         <ul>
-            {{#each user.posts}}
-                <li>{{ this.title }} - {{ this.createdAt }}</li>
-                <p>{{ this.content }}</p>
-            {{/each}}
+            {{#if user.posts}}
+  {{#each user.posts}}
+    <h2>{{ title }}</h2>
+    <p>{{ content }}</p>
+  {{/each}}
+{{else}}
+  <p>No posts found for this user.</p>
+{{/if}}
+
         </ul>
         <p><a href="/">Back to Home</a></p>
     </div>

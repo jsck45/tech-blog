@@ -27,13 +27,23 @@ module.exports = {
 
   createPost: async (req, res) => {
     try {
-      const newPost = await Post.create(req.body);
+      // Get the authenticated user's ID from the session or authentication middleware
+      const userId = req.session.user.id; // Modify this line based on your authentication setup
+  
+      // Include the userId in the req.body before creating the post
+      const newPostData = {
+        ...req.body,
+        userId, // Include the userId in the new post data
+      };
+  
+      const newPost = await Post.create(newPostData);
       res.status(201).json(newPost);
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Failed to create post' });
     }
   },
+  
 
   updatePost: async (req, res) => {
     try {

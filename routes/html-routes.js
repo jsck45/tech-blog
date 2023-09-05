@@ -28,6 +28,7 @@ router.get('/profile', async (req, res) => {
         ],
       });
       if (user) {
+        console.log(user)
         res.render('profile', { user });
       } else {
         res.status(404).send('User not found');

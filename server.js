@@ -4,7 +4,9 @@ const session = require('express-session');
 const path = require('path');
 const sequelize = require('./config/config');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const { apiRouter, htmlRouter } = require('./routes/index');
+
+// Import the router from the routes folder
+const router = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -38,9 +40,19 @@ app.use(
   })
 );
 
-// Routes
-app.use('/api', apiRouter);
-app.use('/', htmlRouter);
+// Use the router object
+console.log('Defining routes...');
+
+app.use('/', router);
+
+console.log('Routes defined.');
+
+
+// Add this line to log incoming requests
+app.use((req, res, next) => {
+  console.log('Incoming request:', req.method, req.url);
+  next();
+});
 
 // Start the server
 sequelize.sync({ force: false }).then(() => {

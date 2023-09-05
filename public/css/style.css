@@ -4,10 +4,11 @@
 }
 .card {
     border: solid 1px;
+    margin-top: 2rem;
 }
 .centered-form {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Make the form take the full viewport height */
+    height: 100vh; 
 }
