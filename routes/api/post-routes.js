@@ -6,10 +6,10 @@ const { Post } = require('../../models');
 router.get('/', async (req, res) => {
   try {
     const posts = await Post.findAll({
-      attributes: ['id', 'title', 'content', 'userId'], 
+      attributes: ['id', 'title', 'content', 'userId'],
     });
-    res.json(posts); 
-    console.log(posts);
+    const mappedPosts = posts.map((post) => post.get({ plain: true }));
+    res.json(mappedPosts);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to retrieve posts' });
@@ -20,12 +20,13 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id, {
-      attributes: ['id', 'title', 'content', 'userId'], 
+      attributes: ['id', 'title', 'content', 'userId'],
     });
     if (!post) {
       res.status(404).json({ error: 'Post not found' });
     } else {
-      res.json(post);
+      const mappedPost = post.get({ plain: true });
+      res.json(mappedPost);
     }
   } catch (err) {
     console.error(err);

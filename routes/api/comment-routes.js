@@ -5,8 +5,11 @@ const { Comment } = require('../../models');
 // Get all comments
 router.get('/', async (req, res) => {
   try {
-    const comments = await Comment.findAll();
-    res.json(comments);
+    const comments = await Comment.findAll({
+      attributes: ['id', 'comment', 'userId', 'postId'],
+    });
+    const mappedComments = comments.map((comment) => comment.get({ plain: true }));
+    res.json(mappedComments);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to retrieve comments' });
@@ -16,11 +19,14 @@ router.get('/', async (req, res) => {
 // Get a comment by ID
 router.get('/:id', async (req, res) => {
   try {
-    const comment = await Comment.findByPk(req.params.id);
+    const comment = await Comment.findByPk(req.params.id, {
+      attributes: ['id', 'comment', 'userId', 'postId'],
+    });
     if (!comment) {
       res.status(404).json({ error: 'Comment not found' });
     } else {
-      res.json(comment);
+      const mappedComment = comment.get({ plain: true });
+      res.json(mappedComment);
     }
   } catch (err) {
     console.error(err);

@@ -6,30 +6,42 @@ const { withAuth, comparePasswords } = require('../../middleware/authMiddleware'
 // Get all users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.findAll();
-    console.log('All users:', users); // Add this console log
-
-    res.json(users);
+    const users = await User.findAll({
+      attributes: ['id', 'username'],
+    });
+    const mappedUsers = users.map((user) => user.get({ plain: true }));
+    res.json(mappedUsers);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to retrieve users' });
   }
 });
 
+
 // Get a user by ID
 router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.params.id, {
+      attributes: ['id', 'username'],
+      include: [
+        {
+          model: Post,
+          attributes: ['id', 'title', 'content', 'userId'],
+        },
+      ],
+    });
     if (!user) {
       res.status(404).json({ error: 'User not found' });
     } else {
-      res.json(user);
+      const mappedUser = user.get({ plain: true });
+      res.json(mappedUser);
     }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to retrieve user' });
   }
 });
+
 router.post('/signup', async (req, res) => {
   try {
     console.log('Received signup request:', req.body);

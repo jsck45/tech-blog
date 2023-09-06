@@ -22,7 +22,6 @@ router.get('/', async (req, res) => {
 
 // In your /profile route
 router.get('/profile', async (req, res) => {
-  console.log(req.session.logged_in); // Add this line
 
   const isAuthenticated = req.session.logged_in;
 
@@ -33,16 +32,18 @@ router.get('/profile', async (req, res) => {
         include: [
           {
             model: Post,
-            order: [['createdAt', 'DESC']], // Order posts by creation date (latest first)
+            order: [['createdAt', 'DESC']], 
           },
         ],
       });
       if (user) {
-        // You can access the authenticated user's information using req.session.user
+        const userPosts = user.posts.map((post) => post.get({ plain: true }));
         const authenticatedUser = req.session.user;
-        console.log(authenticatedUser);
 
-        res.render('profile', { user });
+        console.log('User:', user.toJSON()); // Log the user data
+        console.log('User posts:', user.posts);
+        
+        res.render('profile', { user: authenticatedUser, posts: userPosts });
       } else {
         res.status(404).send('User not found');
       }
