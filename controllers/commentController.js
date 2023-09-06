@@ -3,7 +3,9 @@ const { Comment } = require('../models');
 module.exports = {
   getAllComments: async (req, res) => {
     try {
-      const comments = await Comment.findAll();
+      const comments = await Comment.findAll({
+        attributes: ['id', 'comment', 'userId', 'postId'],
+      });
       res.json(comments);
     } catch (err) {
       console.error(err);
@@ -13,7 +15,9 @@ module.exports = {
 
   getCommentById: async (req, res) => {
     try {
-      const comment = await Comment.findByPk(req.params.id);
+      const comment = await Comment.findByPk(req.params.id, {
+        attributes: ['id', 'comment', 'userId', 'postId'],
+      });
       if (!comment) {
         res.status(404).json({ error: 'Comment not found' });
       } else {

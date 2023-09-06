@@ -2,9 +2,9 @@
         <h1>Welcome, {{ user.username }}!</h1>
         <h2>Your Posts:</h2>
         <ul>
-            {{#if user.posts}}
-  {{#each user.posts}}
-    <h2>{{ this.title }}</h2>
+            {{#if posts}}
+  {{#each posts}}
+        <h2><a href="/posts/{{ id }}">{{ this.title }}</a></h2>
     <p>{{ this.content }}</p>
   {{/each}}
 {{else}}
@@ -17,5 +17,3 @@
         <input type="hidden" id="userId" value="{{ user.id }}">
 
     </div>
-
-{{!-- <script src="/js/profile.js"></script> --}}

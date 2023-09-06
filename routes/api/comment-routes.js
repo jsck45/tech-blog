@@ -1,82 +1,11 @@
 const router = require('express').Router();
 const { withAuth } = require('../../middleware/authMiddleware');
-const { Comment } = require('../../models');
+const commentController = require('../../controllers/commentController');
 
-// Get all comments
-router.get('/', async (req, res) => {
-  try {
-    const comments = await Comment.findAll({
-      attributes: ['id', 'comment', 'userId', 'postId'],
-    });
-    const mappedComments = comments.map((comment) => comment.get({ plain: true }));
-    res.json(mappedComments);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to retrieve comments' });
-  }
-});
-
-// Get a comment by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const comment = await Comment.findByPk(req.params.id, {
-      attributes: ['id', 'comment', 'userId', 'postId'],
-    });
-    if (!comment) {
-      res.status(404).json({ error: 'Comment not found' });
-    } else {
-      const mappedComment = comment.get({ plain: true });
-      res.json(mappedComment);
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to retrieve comment' });
-  }
-});
-
-// Create a new comment
-router.post('/', withAuth, async (req, res) => {
-  try {
-    const newComment = await Comment.create(req.body);
-    res.status(201).json(newComment);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to create comment' });
-  }
-});
-
-// Update a comment
-router.put('/:id', withAuth, async (req, res) => {
-  try {
-    const updatedComment = await Comment.update(req.body, {
-      where: { id: req.params.id },
-    });
-    if (updatedComment[0] === 0) {
-      res.status(404).json({ error: 'Comment not found' });
-    } else {
-      res.status(200).json({ message: 'Comment updated successfully' });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to update comment' });
-  }
-});
-
-// Delete a comment
-router.delete('/:id', withAuth, async (req, res) => {
-  try {
-    const deletedComment = await Comment.destroy({
-      where: { id: req.params.id },
-    });
-    if (!deletedComment) {
-      res.status(404).json({ error: 'Comment not found' });
-    } else {
-      res.status(204).end();
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to delete comment' });
-  }
-});
+router.get('/', commentController.getAllComments);
+router.get('/:id', commentController.getCommentById);
+router.post('/', withAuth, commentController.createComment);
+router.put('/:id', withAuth, commentController.updateComment);
+router.delete('/:id', withAuth, commentController.deleteComment);
 
 module.exports = router;
