@@ -5,14 +5,20 @@ const { User, Post } = require('../models');
 
 router.get('/', async (req, res) => {
   try {
-      const posts = await Post.findAll(); 
+    const postData = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'userId'],
+    });
 
-      res.render('homepage', { posts });
+    const posts = postData.map((project) => project.get({ plain:true })
+    );
+    
+    res.render('homepage', { posts });
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
+    console.error(err);
+    res.status(500).json({ error: 'Failed to retrieve posts' });
   }
 });
+
 
 // In your /profile route
 router.get('/profile', async (req, res) => {

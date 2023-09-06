@@ -8,7 +8,8 @@ router.get('/', async (req, res) => {
     const posts = await Post.findAll({
       attributes: ['id', 'title', 'content', 'userId'], 
     });
-    res.json(posts);
+    res.json(posts); 
+    console.log(posts);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to retrieve posts' });

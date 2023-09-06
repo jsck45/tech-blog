@@ -18,23 +18,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join(__dirname, 'views'));
 
-// Set up Handlebars as the template engine
 app.engine(
   'handlebars',
   exphbs({
-    defaultLayout: 'main',
-    partialsDir: path.join(__dirname, 'views', 'partials'), // Adjust the path as needed
+    defaultLayout: 'main', // Assuming 'main' is the layout in 'views/layouts'
+    layoutsDir: path.join(__dirname, 'views/layouts'), // Specify the correct path
+    partialsDir: path.join(__dirname, 'views/partials'), // If you have partials
   })
 );
-app.set('view engine', 'handlebars');app.set('view engine', 'handlebars');
+app.set('view engine', 'handlebars');
 
 // Set up the session middleware to use the SequelizeStore.
-const sessionMiddleware = session({
-  secret: process.env.SESSION_SECRET,
+const sess = {
+  secret: 'Super secret secret',
   cookie: {
     maxAge: 300000,
     httpOnly: true,
-    secure: false, // Change to true for production with HTTPS
+    secure: false,
     sameSite: 'strict',
   },
   resave: false,
@@ -42,11 +42,10 @@ const sessionMiddleware = session({
   store: new SequelizeStore({
     db: sequelize,
   }),
-});
+};
 
+app.use(session(sess));
 
-
-app.use(sessionMiddleware); // Use the session middleware here
 app.use('/', router);
 
 // Add this line to log incoming requests
