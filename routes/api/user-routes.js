@@ -30,8 +30,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve user' });
   }
 });
-
-// Create a new user
 router.post('/signup', async (req, res) => {
   try {
     console.log('Received signup request:', req.body);
@@ -42,7 +40,13 @@ router.post('/signup', async (req, res) => {
       password: hashedPassword,
     });
     console.log('New user created:', newUser);
-    res.status(201).json(newUser);
+
+    // Set session variables to indicate that the user is logged in
+    req.session.logged_in = true;
+    req.session.user = { id: newUser.id, username: newUser.username };
+
+    // Redirect the user to the profile page
+    res.redirect('/profile');
   } catch (err) {
     console.error('Error during user creation:', err);
     res.status(500).json({ error: 'Failed to create user' });
@@ -75,7 +79,7 @@ router.post('/login', async (req, res) => {
     req.session.user = { id: user.id, username: user.username };
 
     // Respond with a success message or redirect to the profile page
-    res.status(200).json({ message: 'Login successful' });
+      res.redirect('/profile');
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to log in' });

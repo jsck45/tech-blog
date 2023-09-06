@@ -19,8 +19,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 
 // Set up Handlebars as the template engine
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
-app.set('view engine', 'handlebars');
+app.engine(
+  'handlebars',
+  exphbs({
+    defaultLayout: 'main',
+    partialsDir: path.join(__dirname, 'views', 'partials'), // Adjust the path as needed
+  })
+);
+app.set('view engine', 'handlebars');app.set('view engine', 'handlebars');
 
 // Set up the session middleware to use the SequelizeStore.
 const sessionMiddleware = session({

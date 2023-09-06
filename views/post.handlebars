@@ -1,0 +1,55 @@
+<div class='container mt-5'>
+  <div class='row justify-content-center'>
+    <div class='col-lg-11 col-sm-12'>
+      <div class='row'>
+        <div class='col-lg-8 col-md-12'>
+          <div class="container mt-4">
+  {{#each posts}}
+    {{> post}}
+  {{/each}}
+</div>
+
+
+          <div class='comments-container mt-4 p-3'>
+            {{#each comments}}
+              <div class='comment'>
+                <p>
+                  <strong>{{userUsername}}</strong>: {{comment}}
+                  {{#if isOwnComment}}
+                    <span id="delete-btn" data-id={{id}} class="delete-icon">
+                      <img src="/images/icons8-delete-50.png" alt="delete_icon" data-id={{id}}>
+                    </span>
+                  {{/if}}
+                </p>
+              </div>
+            {{/each}}
+          </div>
+
+          <div class='comment-container mt-4 comment-form'>
+            {{#if loggedIn}}
+              <form id='comment-form' method='POST'>
+                <div class='form-group'>
+                  <label for='comment'>Add a Comment:</label>
+                  <textarea
+                    class='form-control'
+                    id='comment-textarea'
+                    rows='3'
+                  ></textarea>
+                </div>
+                <button type='submit' class='btn button'>Submit Comment</button>
+              </form>
+            {{else}}
+              <p>You must be logged in to add a comment.</p>
+            {{/if}}
+          </div>
+        </div>
+
+       
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src='/js/add-comment.js'></script>

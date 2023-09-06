@@ -1,14 +1,5 @@
 <div class="container mt-4">
-    {{!-- {{#each posts}} --}}
-        <div class="row mb-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{post.title}}</h5>
-                        <p class="card-text">{{post.content}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {{!-- {{/each}} --}}
+  {{#each posts}}
+    {{> post}}
+  {{/each}}
 </div>
