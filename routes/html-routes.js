@@ -13,5 +13,6 @@ router.get('/signup', (req, res) => {
 });
 router.post('/signup', userController.createUser);
 router.post('/login', userController.loginUser);
+router.get('/posts/:id', postController.renderPostPage);
 
 module.exports = router;
